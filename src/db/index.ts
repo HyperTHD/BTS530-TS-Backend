@@ -1,17 +1,18 @@
 import mongoose from 'mongoose';
-import { MockMongoose } from 'mock-mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import config from '../config/config';
+
+let mongo: MongoMemoryServer;
 
 const connect = async () => {
 	if (process.env.NODE_ENV === 'test') {
-		let mockMongoose: MockMongoose = new MockMongoose(mongoose);
+		mongo = new MongoMemoryServer();
+		const mongoUri = await mongo.getUri();
 
-		mockMongoose.prepareStorage().then(async () => {
-			await mongoose.connect(config.employeeCollection, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-				useCreateIndex: true
-			});
+		await mongoose.connect(mongoUri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true
 		});
 	} else {
 		await mongoose.connect(config.employeeCollection, {
@@ -44,7 +45,8 @@ const connect = async () => {
 	}
 };
 
-export const disconnect = () => {
+export const disconnect = async () => {
+	await mongo.stop();
 	return mongoose.connection.close();
 };
 
