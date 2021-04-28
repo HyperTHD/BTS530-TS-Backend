@@ -13,4 +13,17 @@ employeeRouter.get('/', async (req: express.Request, res: express.Response) => {
 	res.status(200).json(list);
 });
 
+employeeRouter.post('/', async (req: express.Request, res: express.Response) => {
+	try {
+		const newEmployee = await EmployeeController.EmployeeAdd(req.body);
+		if (newEmployee) {
+			res.status(201).json(newEmployee);
+		} else {
+			res.status(400).json({ message: "Bad data was given, couldn't create employee" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
+
 export default employeeRouter;

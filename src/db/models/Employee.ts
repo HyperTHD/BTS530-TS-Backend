@@ -1,4 +1,4 @@
-import { Document, Schema, Model, model, Error } from 'mongoose';
+import { Document, Schema, Model, model } from 'mongoose';
 
 export interface IEmployee extends Document {
 	firstName: String;
@@ -29,8 +29,8 @@ export const employeeSchema = new Schema({
 	DOB: Date,
 	username: { type: String, required: true, unique: true },
 	password: { type: String, required: true, unique: true }
-	//blogPosts: [ { type: Schema.Types.ObjectId, ref: 'blogpost' } ],
-	//events: [ { type: Schema.Types.ObjectId, ref: 'event' } ]
+	//blogPosts: [ { type: Schema.Types.ObjectId, ref: 'blogpost' } ], To be added in future commits when relevant collection schema is created
+	//	events: [ { type: Schema.Types.ObjectId, ref: 'event' } ] To be added in future commits when relevant collection schema is created
 });
 
 export const Employee: Model<IEmployee> = model<IEmployee>('employee', employeeSchema, 'Employee');
