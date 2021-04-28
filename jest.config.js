@@ -3,5 +3,5 @@ module.exports = {
     testEnvironment: 'node',
     testPathIgnorePatterns: ['/node_modules'],
     verbose: true,
-    testTimeout: 8000
+    testTimeout: 10000
 }
