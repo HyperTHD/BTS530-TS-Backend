@@ -47,6 +47,7 @@ describe('Employee routes', () => {
 	});
 
 	test('GET route should return a single employee using its ID', async done => {
+		// TODO: Update this test to add employee documents prior to running since relying on the POST test means I'll get a different _id every time the test is ran
 		const res = await request(app).get('/employees');
 		const getResWithId = await request(app).get(`/employees/${res.body[0]._id}`);
 
@@ -54,6 +55,19 @@ describe('Employee routes', () => {
 		expect(getResWithId.get('content-type')).toContain('application/json');
 		expect(getResWithId.body._id).toBe(res.body[0]._id);
 		expect(getResWithId.body.username).toBe('Name1Username');
+		done();
+	});
+
+	test('PUT route should update an existing employee', async done => {
+		// TODO: Update this test to add employee documents prior to running since relying on the POST test means I'll get a different _id every time the test is ran
+		const res = await request(app).get('/employees');
+		const updatedEmployee = await request(app).put(`/employees/${res.body[0]._id}`).send({
+			...res.body[0],
+			username: 'Name2Username'
+		});
+		expect(updatedEmployee.status).toEqual(200);
+		expect(updatedEmployee.get('content-type')).toContain('application/json');
+		expect(updatedEmployee.body.username).toBe('Name2Username');
 		done();
 	});
 });

@@ -39,4 +39,17 @@ employeeRouter.post('/', async (req: express.Request, res: express.Response) => 
 	}
 });
 
+employeeRouter.put('/:id', async (req: express.Request, res: express.Response) => {
+	try {
+		const updatedEmployee = await EmployeeController.EmployeeUpdate(req.body);
+		if (updatedEmployee) {
+			res.status(200).json(updatedEmployee);
+		} else {
+			res.status(400).json({ message: "Bad data was given, couldn't update employee" });
+		}
+	} catch (error) {
+		res.status(503).json({ message: error.message });
+	}
+});
+
 export default employeeRouter;

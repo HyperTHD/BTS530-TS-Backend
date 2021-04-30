@@ -44,6 +44,16 @@ const EmployeeController = {
 		} catch (error) {
 			return error.message;
 		}
+	},
+	EmployeeUpdate: async (newItem: IEmployee) => {
+		try {
+			const updatedEmployee = await Employee.findByIdAndUpdate(newItem._id, newItem, { new: true });
+			if (updatedEmployee) {
+				return updatedEmployee;
+			}
+		} catch (error) {
+			return error.message;
+		}
 	}
 };
 
