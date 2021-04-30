@@ -10,8 +10,8 @@ export interface IEmployee extends Document {
 	address: String;
 	hireDate: Date;
 	DOB: Date;
-	username: String;
-	password: String;
+	username: string;
+	password: string;
 	blogPosts: Schema.Types.ObjectId;
 	events: Schema.Types.ObjectId;
 }

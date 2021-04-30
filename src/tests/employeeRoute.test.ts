@@ -58,6 +58,19 @@ describe('Employee routes', () => {
 		done();
 	});
 
+	test('POST login route should return a token', async done => {
+		// TODO: Update this test similar to :id tests since the token can be different every time a new user is uploaded
+		// ? Should add more tests for this test later on to check the token and validate it, will put in a util file later on
+		const res = await request(app).post('/employees/login').send({
+			username: 'Name1Username',
+			password: 'Name1Pass'
+		});
+
+		expect(res.status).toEqual(200);
+		expect(res.get('content-type')).toContain('application/json');
+		done();
+	});
+
 	test('PUT route should update an existing employee', async done => {
 		// TODO: Update this test to add employee documents prior to running since relying on the POST test means I'll get a different _id every time the test is ran
 		const res = await request(app).get('/employees');

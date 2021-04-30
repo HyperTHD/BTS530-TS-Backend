@@ -64,6 +64,23 @@ const EmployeeController = {
 		} catch (error) {
 			return error.message;
 		}
+	},
+	EmployeeLogin: async (userData: IEmployee): Promise<IEmployee | null> => {
+		try {
+			const submittedEmployee = await Employee.findOne({ username: userData.username });
+			if (submittedEmployee) {
+				let passwordCheck = bcrypt.compareSync(userData.password, submittedEmployee.password);
+				if (passwordCheck) {
+					return submittedEmployee;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} catch (error) {
+			return error.message;
+		}
 	}
 };
 

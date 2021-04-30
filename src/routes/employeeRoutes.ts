@@ -1,6 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import strategy from '../config/passportStrategy';
+import config from '../config/config';
 import EmployeeController from '../db/controllers/employeeController';
 
 const employeeRouter: express.Router = express.Router();
@@ -36,6 +36,25 @@ employeeRouter.post('/', async (req: express.Request, res: express.Response) => 
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message });
+	}
+});
+
+employeeRouter.post('/login', async (req: express.Request, res: express.Response) => {
+	try {
+		const loginEmployee = await EmployeeController.EmployeeLogin(req.body);
+		if (loginEmployee) {
+			let payload = {
+				_id: loginEmployee._id,
+				username: loginEmployee.username,
+				password: loginEmployee.password
+			};
+			const token = jwt.sign(payload, config.jwtSecretKey);
+			res.status(200).json({ message: 'Login was successful', token: token });
+		} else {
+			res.status(400).json({ message: "Bad data was given, couldn't login sadly" });
+		}
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
 	}
 });
 
