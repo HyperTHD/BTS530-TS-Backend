@@ -2,7 +2,13 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import config from '../config/config';
 
-let mongo: MongoMemoryServer;
+let mongo: MongoMemoryServer; // * In-memory server to be used for tests if our environment is in test mode
+
+/**
+ * 	Connect function will either connect to the in-memory server for the tests, or the real database.
+ * 	@param Nothing
+ *  @return Promise<void>
+ */
 
 const connect = async () => {
 	if (process.env.NODE_ENV === 'test') {
@@ -16,7 +22,7 @@ const connect = async () => {
 			useFindAndModify: false
 		});
 	} else {
-		await mongoose.connect(config.employeeCollection, {
+		await mongoose.connect(config.database_Url, {
 			connectTimeoutMS: 5000,
 			useUnifiedTopology: true,
 			useNewUrlParser: true,
@@ -29,7 +35,7 @@ const connect = async () => {
 		connection.on('disconnected', () => {
 			console.log('Trying to reconnect back to DB');
 			setTimeout(() => {
-				mongoose.connect(config.employeeCollection, {
+				mongoose.connect(config.database_Url, {
 					autoReconnect: true,
 					keepAlive: true,
 					socketTimeoutMS: 3000,
@@ -46,6 +52,11 @@ const connect = async () => {
 	}
 };
 
+/*
+	Disconnect function disconnects from the fake database as well as the real database. It terminates the connection
+	@param nothing
+	@return Promise<void>
+*/
 export const disconnect = async () => {
 	await mongo.stop();
 	return mongoose.connection.close();

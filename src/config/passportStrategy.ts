@@ -4,6 +4,7 @@ import config from './config';
 const ExtractJWT = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
+// TODO: JWT token has no expiration time, should update this to add an expiration date, either hard-coded or through an env variable
 const strategy = new JwtStrategy(
 	{
 		jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('jwt'),
