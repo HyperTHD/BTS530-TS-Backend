@@ -52,4 +52,13 @@ employeeRouter.put('/:id', async (req: express.Request, res: express.Response) =
 	}
 });
 
+employeeRouter.delete('/:id', async (req: express.Request, res: express.Response) => {
+	try {
+		await EmployeeController.EmployeeDelete(req.params.id);
+		return res.status(204).end();
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
+
 export default employeeRouter;

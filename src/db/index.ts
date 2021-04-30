@@ -12,7 +12,8 @@ const connect = async () => {
 		await mongoose.connect(mongoUri, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
-			useCreateIndex: true
+			useCreateIndex: true,
+			useFindAndModify: false
 		});
 	} else {
 		await mongoose.connect(config.employeeCollection, {

@@ -70,4 +70,13 @@ describe('Employee routes', () => {
 		expect(updatedEmployee.body.username).toBe('Name2Username');
 		done();
 	});
+
+	test('DELETE route should remove an existing employee', async done => {
+		// TODO: Update this test to add employee documents prior to running since relying on the POST test means I'll get a different _id every time the test is ran
+		const res = await request(app).get('/employees');
+		const deleteEmployee = await request(app).delete(`/employees/${res.body[0]._id}`);
+
+		expect(deleteEmployee.status).toEqual(204);
+		done();
+	});
 });

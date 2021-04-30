@@ -54,6 +54,16 @@ const EmployeeController = {
 		} catch (error) {
 			return error.message;
 		}
+	},
+	EmployeeDelete: async (id: string) => {
+		try {
+			const deletedEmployee = await Employee.findByIdAndRemove(id);
+			if (deletedEmployee) {
+				return;
+			}
+		} catch (error) {
+			return error.message;
+		}
 	}
 };
 
