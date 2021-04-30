@@ -45,4 +45,15 @@ describe('Employee routes', () => {
 		expect(res.body.length).toEqual(1);
 		done();
 	});
+
+	test('GET route should return a single employee using its ID', async done => {
+		const res = await request(app).get('/employees');
+		const getResWithId = await request(app).get(`/employees/${res.body[0]._id}`);
+
+		expect(getResWithId.status).toEqual(200);
+		expect(getResWithId.get('content-type')).toContain('application/json');
+		expect(getResWithId.body._id).toBe(res.body[0]._id);
+		expect(getResWithId.body.username).toBe('Name1Username');
+		done();
+	});
 });

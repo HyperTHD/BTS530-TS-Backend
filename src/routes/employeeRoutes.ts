@@ -13,6 +13,19 @@ employeeRouter.get('/', async (req: express.Request, res: express.Response) => {
 	res.status(200).json(list);
 });
 
+employeeRouter.get('/:id', async (req: express.Request, res: express.Response) => {
+	try {
+		const employee = await EmployeeController.EmployeeGetById(req.params.id);
+		if (employee) {
+			res.status(200).json(employee);
+		} else {
+			res.status(404).json({ message: "Couldn't find employee" });
+		}
+	} catch (error) {
+		res.status(503).json({ message: error.message });
+	}
+});
+
 employeeRouter.post('/', async (req: express.Request, res: express.Response) => {
 	try {
 		const newEmployee = await EmployeeController.EmployeeAdd(req.body);

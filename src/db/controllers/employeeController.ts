@@ -16,10 +16,20 @@ const EmployeeController = {
 				.exec();
 
 			return employeeList;
-		} catch (err) {
-			console.error(err);
+		} catch (error) {
+			return error.message;
 		}
 	},
+
+	EmployeeGetById: async (id: string) => {
+		try {
+			const employee = await Employee.findById(id).populate('events').populate('blogPosts').exec();
+			return employee;
+		} catch (error) {
+			return error.message;
+		}
+	},
+
 	EmployeeAdd: async (newItem: IEmployee) => {
 		let salt = bcrypt.genSaltSync(10);
 
