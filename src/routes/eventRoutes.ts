@@ -1,9 +1,28 @@
-import express from 'express';
+import { Router, Request, Response } from 'express';
+import eventController from '../db/controllers/eventController';
 
-const eventsRouter: express.Router = express.Router();
+const eventsRouter: Router = Router();
 
-eventsRouter.get('/', (req: express.Request, res: express.Response) => {
-	res.send('Events GET route');
+eventsRouter.get('/', async (req: Request, res: Response) => {
+	try {
+		const eventList = await eventController.EventsGetAll();
+		res.status(200).json(eventList);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
+
+eventsRouter.post('/', async (req: Request, res: Response) => {
+	try {
+		const newEvent = await eventController.EventAdd(req.body);
+		if (newEvent) {
+			res.status(201).json(newEvent);
+		} else {
+			res.status(400).json({ message: "Bad data was given, couldn't create employee" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
 });
 
 export default eventsRouter;
