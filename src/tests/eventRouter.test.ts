@@ -42,4 +42,16 @@ describe('Event Routes', () => {
 		expect(res.body[0].Manager).toBe('Abdulbasid Guled');
 		done();
 	});
+	test('GET route should return an event by its id', async done => {
+		const res = await request(app).get('/events');
+		const response = await request(app).get(`/events/${res.body[0]._id}`);
+
+		expect(response.status).toEqual(200);
+		expect(response.body instanceof Object).toBe(true);
+		expect(response.get('content-type')).toContain('application/json');
+		expect(response.body.Manager).toBe('Abdulbasid Guled');
+		expect(response.body.EventLocation).toBe('Home');
+		expect(response.body.EventName).toBe('Summer co-op internship interview');
+		done();
+	});
 });

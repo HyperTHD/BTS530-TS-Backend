@@ -12,6 +12,19 @@ eventsRouter.get('/', async (req: Request, res: Response) => {
 	}
 });
 
+eventsRouter.get('/:id', async (req: Request, res: Response) => {
+	try {
+		const event = await eventController.getEventsByID(req.params.id);
+		if (event) {
+			res.status(200).json(event);
+		} else {
+			res.status(404).json({ message: 'Event could not be found' });
+		}
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
+
 eventsRouter.post('/', async (req: Request, res: Response) => {
 	try {
 		const newEvent = await eventController.EventAdd(req.body);
