@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { eventRouter } from '.';
 import eventController from '../db/controllers/eventController';
 
 const eventsRouter: Router = Router();
@@ -35,6 +36,28 @@ eventsRouter.post('/', async (req: Request, res: Response) => {
 		}
 	} catch (error) {
 		res.status(500).json({ message: error.message });
+	}
+});
+
+eventsRouter.put('/:id', async (req: Request, res: Response) => {
+	try {
+		const updatedEvent = await eventController.EventEdit(req.body);
+		if (updatedEvent) {
+			res.status(200).json(updatedEvent);
+		} else {
+			res.status(400).json({ message: "Bad data was given, couldn't update event'" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+});
+
+eventsRouter.delete('/:id', async (req: Request, res: Response) => {
+	try {
+		await eventController.EventDelete(req.params.id);
+		return res.status(204).end();
+	} catch (error) {
+		res.status(503).json({ message: error.message });
 	}
 });
 

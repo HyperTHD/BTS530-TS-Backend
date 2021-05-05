@@ -54,4 +54,24 @@ describe('Event Routes', () => {
 		expect(response.body.EventName).toBe('Summer co-op internship interview');
 		done();
 	});
+	test('PUT route should update an event', async done => {
+		const res = await request(app).get('/events');
+		const response = await request(app).put(`/events/${res.body[0]._id}`).send({
+			...res.body[0],
+			Manager: 'Adnan Guled'
+		});
+
+		expect(response.status).toEqual(200);
+		expect(response.get('content-type')).toContain('application/json');
+		expect(response.body instanceof Object).toBe(true);
+		expect(response.body.Manager).toBe('Adnan Guled');
+		done();
+	});
+	test('DELETE route should delete an event', async done => {
+		const res = await request(app).get('/events');
+		const response = await request(app).delete(`/events/${res.body[0]._id}`);
+
+		expect(response.status).toEqual(204);
+		done();
+	});
 });
