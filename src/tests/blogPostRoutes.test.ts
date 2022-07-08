@@ -37,4 +37,22 @@ describe('Blog Post routes', () => {
 		expect(res.body[0].title).toBe('Test blog post');
 		done();
 	});
+	test('PUT request should return an updated blog post', async done => {
+		const res = await request(app).get('/blogposts');
+		const updatedBlogPost = await request(app).put(`/blogposts/${res.body[0]._id}`).send({
+			...res.body[0],
+			title: 'Test blog post edited'
+		});
+		expect(updatedBlogPost.status).toBe(200);
+		expect(updatedBlogPost.get('content-type')).toContain('application/json');
+		expect(updatedBlogPost.body.title).toBe('Test blog post edited');
+		expect(updatedBlogPost.body.author).toBe('Abdulbasid Guled');
+		done();
+	});
+	test('DELETE request should return nothing but the status code indicating that it was deleted', async done => {
+		const res = await request(app).get('/blogposts');
+		const deletedPost = await request(app).delete(`/blogposts/${res.body[0]._id}`);
+		expect(deletedPost.status).toBe(204);
+		done();
+	});
 });
